@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Museum Artifact</title>
+</head>
+<body>
+<h1>Add New Artifact</h1>
+
+<form th:action="@{/artifacts/add}" th:object="${artifact}" method="post">
+
+    <label for="name">Name:</label><br/>
+    <input type="text" id="name" th:field="*{name}" required />
+    <div th:if="${#fields.hasErrors('name')}" style="color:red" th:errors="*{name}"></div>
+    <br/>
+
+    <label for="origin">Origin:</label><br/>
+    <input type="text" id="origin" th:field="*{origin}" required />
+    <div th:if="${#fields.hasErrors('origin')}" style="color:red" th:errors="*{origin}"></div>
+    <br/>
+
+    <label for="era">Era:</label><br/>
+    <input type="text" id="era" th:field="*{period}" required />
+    <div th:if="${#fields.hasErrors('period')}" style="color:red" th:errors="*{period}"></div>
+    <br/>
+
+    <label for="description">Description:</label><br/>
+    <textarea id="description" th:field="*{description}" required></textarea>
+    <div th:if="${#fields.hasErrors('description')}" style="color:red" th:errors="*{description}"></div>
+    <br/>
+
+    <button type="submit">Add Artifact</button>
+    <a href="/artifacts">Cancel</a>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Museum Artifacts</title>
+</head>
+<body>
+<h1>Museum Artifacts</h1>
+
+<div th:if="${message}" style="color:green;">
+    <p th:text="${message}"></p>
+</div>
+
+<a href="/artifacts/add">Add New Artifact</a>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Origin</th>
+        <th>Era</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="artifact : ${artifacts}">
+        <td th:text="${artifact.id}"></td>
+        <td th:text="${artifact.name}"></td>
+        <td th:text="${artifact.origin}"></td>
+        <td th:text="${artifact.period}"></td>
+        <td th:text="${artifact.description}"></td>
+        <td>
+            <a th:href="@{'/artifacts/edit/' + ${artifact.id}}">Edit</a> |
+            <a th:href="@{'/artifacts/delete/' + ${artifact.id}}"
+               onclick="return confirm('Are you sure you want to delete this artifact?');">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
