@@ -43,20 +43,21 @@ public class MuseumArtifactServiceImpl implements MuseumArtifactService {
     @CacheEvict(value = "artifactsCache", allEntries = true)
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public MuseumArtifact updateArtifact(Long id, MuseumArtifact artifact) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Artifact not found with id " + id);
-        }
+        MuseumArtifact existingArtifact = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Artifact not found with id " + id));
 
-        // Check if another artifact already uses the same name
         MuseumArtifact existingArtifactWithName = repository.findByName(artifact.getName());
         if (existingArtifactWithName != null && !existingArtifactWithName.getId().equals(id)) {
             throw new RuntimeException("Another artifact with name '" + artifact.getName() + "' already exists.");
         }
 
-        artifact.setId(id);
-        return repository.save(artifact);
-    }
+        existingArtifact.setName(artifact.getName());
+        existingArtifact.setOrigin(artifact.getOrigin());
+        existingArtifact.setPeriod(artifact.getPeriod());
+        existingArtifact.setDescription(artifact.getDescription());
 
+        return existingArtifact;
+    }
 
     @CacheEvict(value = "artifactsCache", allEntries = true)
     @Transactional(isolation = Isolation.SERIALIZABLE)
