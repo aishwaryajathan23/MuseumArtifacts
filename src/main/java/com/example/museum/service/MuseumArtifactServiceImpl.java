@@ -46,9 +46,11 @@ public class MuseumArtifactServiceImpl implements MuseumArtifactService {
         MuseumArtifact existingArtifact = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Artifact not found with id " + id));
 
-        MuseumArtifact existingArtifactWithName = repository.findByName(artifact.getName());
-        if (existingArtifactWithName != null && !existingArtifactWithName.getId().equals(id)) {
-            throw new RuntimeException("Another artifact with name '" + artifact.getName() + "' already exists.");
+        if (!existingArtifact.getName().equals(artifact.getName())) {
+            MuseumArtifact artifactWithName = repository.findByName(artifact.getName());
+            if (artifactWithName != null && !artifactWithName.getId().equals(id)) {
+                throw new RuntimeException("Another artifact with name '" + artifact.getName() + "' already exists.");
+            }
         }
 
         existingArtifact.setName(artifact.getName());
